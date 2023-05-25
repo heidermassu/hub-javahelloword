@@ -1,0 +1,31 @@
+apiVersion: serving.knative.dev/v1
+kind: Deployment
+metadata:
+  name: hello-world-app
+  namespace: applications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world-app
+  template:
+    metadata:
+      labels:
+        app: hello-world-app
+    spec:
+      containers:
+      - name: hello-world-app
+        image: hello-world-app
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: "helloworld"
+  namespace: applications
+spec:
+  template:
+    spec:
+      containers:
+        - image: "heiderhengstmann/javaapps:calculator-V1.0"
+          ports:
+            - containerPort: 8282
