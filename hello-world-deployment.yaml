@@ -1,31 +1,57 @@
-apiVersion: serving.knative.dev/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: hello-world-app
-  namespace: applications
+  labels:
+    app.kubernetes.io/name: helloworld
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: hello-world-app
-  template:
-    metadata:
-      labels:
-        app: hello-world-app
-    spec:
-      containers:
-      - name: hello-world-app
-        image: hello-world-app
+  containers:
+  - name: hello-world-app
+    image: heiderhengstmann/javaapps:helloworld-v1.1
+    ports:
+      - containerPort: 80
+
 ---
-apiVersion: serving.knative.dev/v1
+apiVersion: v1
 kind: Service
 metadata:
-  name: "helloworld"
-  namespace: applications
+  name: hello-world-service
 spec:
-  template:
-    spec:
-      containers:
-        - image: "heiderhengstmann/javaapps:calculator-V1.0"
-          ports:
-            - containerPort: 8282
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: helloworld
+  ports:
+  - name: hello-world-service-port
+    protocol: TCP
+    port: 80
+    targetPort: 8181
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
